@@ -89,7 +89,7 @@ $ yarn add axios (Connect backend - Client HTTP)
 - Instale as dependencias: npm install / yarn
 - Execute a aplicação: npm start / yarn start
 
-## :page_facing_up: Anotações - JavaScript
+## :page_facing_up: Anotações -> JavaScript
 
 #### Intrudução
 
@@ -385,4 +385,4 @@ console.log(Meu nome é ${nome} e tenho ${idade} anos.);
 - Promise → Quando faço callback eu digo que retornarei depois, quando faço a promise eu retorno de imediato uma promessa que no futuro vou trazer um valor, dado uma Promise, eu rejeito a promesa ou eu resolvo a promessa.
 - Async/Await → Apesar de parecer sincrona ele é assincrono, ou seja, ele é uma camada para melhor visualizar e tratar a Promise que por sua vez trata o callback.
 
-## :page_facing_up: Anotações - React
+## :page_facing_up: Anotações -> React
