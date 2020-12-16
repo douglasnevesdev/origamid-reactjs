@@ -88,3 +88,35 @@ $ yarn add axios (Connect backend - Client HTTP)
 
 - Instale as dependencias: npm install / yarn
 - Execute a aplicação: npm start / yarn start
+
+
+## :page_facing_up: Anotações
+
+### Javascript
+
+#### Tudo é Objeto
+- Tudo em Javascript é objeto (Todo objeto possui um protótipo, menos o null e o undefined (este não é um objeto)).
+```bash
+// Objeto Literal
+const menu = {
+  selector: '.principal',
+  active() {
+    const menuElement = document.querySelector(this.selector);
+    menuElement.classList.add('active');
+  },
+};
+
+menu.selector; // ".principal";
+menu.active(); // adicionar active ao menu
+menu.hasOwnProperty('class'); // método herdado
+```
+
+#### Arrow Function
+- Função é criada na memoria logo de inicio(host), logo se eu chamo antes/apos a declaração da função ela sera executada.
+- Uma função criada como uma expressão (Função anonima, aonde atribuimos uma função a uma variavel), tem uma diferença da função, precisa que a constante primeiro seja criada para depois permitir acesso, logo não pode chamar antes de declarar.
+- A principal diferença da Arrow Function para uma função é o contexto do this. A arrow function não cria o próprio this, ela utiliza do pai e tambem tem sua sintaxe simplificada.
+
+#### Destructuring
+- É possui desestruturar objetos e arrays.
+- 
+
