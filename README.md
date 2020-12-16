@@ -381,8 +381,8 @@ console.log(Meu nome é ${nome} e tenho ${idade} anos.);
 
 #### Extra
 
--Sincrona → Executa uma atras da outra.
--Assincrona → Varios processos simultaneamente.
--CallBack → Uma ação que executara algo e depois que concluir vai executar alguma outra função.
--Promise → Quando faço callback eu digo que retornarei depois, quando faço a promise eu retorno de imediato uma promessa que no futuro vou trazer um valor, dado uma Promise, eu rejeito a promesa ou eu resolvo a promessa.
--Async/Await → Apesar de parecer sincrona ele é assincrono, ou seja, ele é uma camada para melhor visualizar e tratar a Promise que por sua vez trata o callback.
+- Sincrona → Executa uma atras da outra.
+- Assincrona → Varios processos simultaneamente.
+- CallBack → Uma ação que executara algo e depois que concluir vai executar alguma outra função.
+- Promise → Quando faço callback eu digo que retornarei depois, quando faço a promise eu retorno de imediato uma promessa que no futuro vou trazer um valor, dado uma Promise, eu rejeito a promesa ou eu resolvo a promessa.
+- Async/Await → Apesar de parecer sincrona ele é assincrono, ou seja, ele é uma camada para melhor visualizar e tratar a Promise que por sua vez trata o callback.
