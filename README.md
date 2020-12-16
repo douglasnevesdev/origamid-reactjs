@@ -377,6 +377,48 @@ console.log(Meu nome é ${nome} e tenho ${idade} anos.);
   Antes: const teste = { nome: nome, empresa: ‘teste’};
   Depois: const teste = { nome, empresa: ‘teste’};
 
+#### Fetch
+
+- Envia requisições assíncronas para o servidor. Serve para acessarmos/escrevermos dados em apis externas.
+
+```javascript
+fetch("https://ranekapi.origamid.dev/wp-json/api/produto")
+  .then((response) => response.json())
+  .then((json) => {
+    console.log(json);
+  });
+```
+
+#### Async / Await
+
+- Fetch retorna uma promisse. É possível criarmos funções assíncronas, que irão esperar a promisse resolver, antes de continuar com o código.
+
+```javascript
+async function fetchProdutos(url) {
+  const response = await fetch(url);
+  const json = await response.json();
+  return json;
+}
+
+fetchProdutos("https://ranekapi.origamid.dev/wp-json/api/produto");
+```
+
+#### Expressões
+
+- Fetch retorna uma promisse. É possível criarmos funções assíncronas, que irão esperar a promisse resolver, antes de continuar com o código.
+
+```javascript
+const grupoA = 100;
+const grupoB = 300;
+const vencedor = grupoA > grupoB ? "Grupo A Venceu" : "Grupo B Venceu";
+
+const numeros = [2, 3, 4, 5, 6];
+const total = numeros.filter((numero) => numero > 4);
+
+const active = true;
+const button = active && "Botão está ativo";
+```
+
 #### Extra
 
 - Sincrona → Executa uma atras da outra.
@@ -386,3 +428,21 @@ console.log(Meu nome é ${nome} e tenho ${idade} anos.);
 - Async/Await → Apesar de parecer sincrona ele é assincrono, ou seja, ele é uma camada para melhor visualizar e tratar a Promise que por sua vez trata o callback.
 
 ## :page_facing_up: Anotações -> React
+
+#### React Element
+
+-Todo elemento React é criado com a função createElement. O Babel é o responsável por transformar o elemento criado com JSX (que se parece com HTML) em funções de React.
+
+```javascript
+function App() {
+  return <div id="container">Meu App</div>;
+}
+// É transformado em:
+function App() {
+  return React.createElement("div", { id: "container" }, "Meu App");
+}
+```
+
+<p align="center">
+  <img alt="createElementReact" src="github/createlement.png.png" width="70%">
+</p>
