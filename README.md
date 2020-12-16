@@ -444,5 +444,5 @@ function App() {
 ```
 
 <p align="center">
-  <img alt="createElementReact" src="github/createlement.png" width="70%">
+  <img alt="createElementReact" src="github/createlement.png" width="100%">
 </p>
