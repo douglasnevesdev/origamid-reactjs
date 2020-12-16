@@ -22,6 +22,8 @@
 
 O projeto é um sistema de rede social, aonde é possivel adicionar fotos, visualizar as fotos, postar comentarios, criar usuarios, autenticar, obter estatisticas, sair do sistema entre outras ações, tudo criado totalmente do <i>zero.<i>
 
+<i>Obs:.<i> Adicionei anotações importantes sobre o JavaScript/React para ser utilizado como uma base de consulta.
+
 ## :rocket: Tecnologias
 
 ### Back-End (NodeJS)
