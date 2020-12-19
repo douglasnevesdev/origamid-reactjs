@@ -93,11 +93,11 @@ $ yarn add axios (Connect backend - Client HTTP)
 
 ## :page_facing_up: Anotações -> JavaScript
 
-#### Intrudução
+### Intrudução
 
 O ES6 seria uma nova maneira de fazer os processos no javascript, ou seja, não faz nada novo, não são novas funcionalidades, apenas reformulou a forma de chegar ao resultado final, por isso é possível sua conversão com o babel, um exemplo de implementação do ES6 é a possibilidade de trabalhar com classes de forma nativa no javascript. Como alguns navegadores não entende o ES6 usamos o babel para converte as sintaxes em função, garantindo assim que todos os navegadores entenda o código.
 
-#### Modules
+### Modules
 
 - Ao adicionar o type="module" o navegador tratara o script embutido ou externo como um módulo ECMAScript.
 - Módulos são executados apenas uma vez por pagina, independente se você tiver varios imports.
@@ -140,7 +140,7 @@ O ES6 seria uma nova maneira de fazer os processos no javascript, ou seja, não 
 <script async type="module" src="1.mjs"></script>
 ```
 
-#### HTMLElement
+### HTMLElement
 
 - Todo elemento HTML do DOM herda propriedades e métodos do construtor HTMLElement.
 
@@ -174,7 +174,7 @@ div.dataset.tempo = 1000;
 - A vantagem de se utilizar data atributes é que torna mais fácil evitarmos conflitos com estilos do CSS. alem de deixar a estrutura de TAG mais organizada.
 - Por padrão o Javascript não aceita - (traço) como caracter valido, para nomear a propriedades. Então qualquer traço será removido e a letra seguinte transformada em maiúscula.
 
-#### Arrays
+### Arrays
 
 - No ES6 ganhamos funções para tratar arrays.Dado o array -> const arr = [1,3,4,5,8,9];
 - forEach: Percorre todos os elementos
@@ -232,7 +232,7 @@ const indice = numeros.findIndex((repository) => repository.id === id);
 console.log(indice); // 2
 ```
 
-#### Tudo é Objeto
+### Tudo é Objeto
 
 - Tudo em Javascript é objeto (Todo objeto possui um protótipo, menos o null e o undefined (este não é um objeto)).
 
@@ -259,7 +259,7 @@ const body = document.querySelector("body");
 body.classList.add("js"); // adiciona JS ao Body
 ```
 
-#### Arrow Function
+### Arrow Function
 
 - Escopo Léxico: Funções ao serem criadas geram escopo próprio, esse escopo existe enquanto a função existe e você pode acessar usando o this, arrow functions não possui this, o this utilizado em arrow functions fara referência ao objeto que ele já era referência no momento da criação. Escopo Léxico significa que podemos acessar dentro da função com o this referências independentes do escopo.
 - Retorno: Não precisamos declarar explicitamente o retorno, a última expressão realizada vai ser o retorno.
@@ -281,7 +281,7 @@ const countLetters = (word) => word.length;
 countLetters("Rafael"); // 6
 ```
 
-#### Destructuring
+### Destructuring
 
 - Podemos desestruturar objetos/array, suponha que temos um objeto pessoa e dentro dele outro objeto endereço, podemos desestruturar -> const{ nome, idade, endereco: {cidade} } = objeto;
 
@@ -326,7 +326,7 @@ const useQuadrado = [
 const [lados, area] = useQuadrado;
 ```
 
-#### Rest e Spread
+### Rest e Spread
 
 Rest: Pega o resto das propriedades, pode ser usado em funções, arrays e outros. const{nome,…resto} = usuário;
 
@@ -365,7 +365,7 @@ const cloneCarro = { ...carro };
 const carroEsportivo = { turbo: true, ...carro };
 ```
 
-#### Templates Literals
+### Templates Literals
 
 -Simplifica o uso de variáveis dentro da string.
 
@@ -373,13 +373,13 @@ const carroEsportivo = { turbo: true, ...carro };
 console.log(Meu nome é ${nome} e tenho ${idade} anos.);
 ```
 
-#### Object Short Syntax
+### Object Short Syntax
 
 - Simplifica forma de passar parâmetros para objetos.
   Antes: const teste = { nome: nome, empresa: ‘teste’};
   Depois: const teste = { nome, empresa: ‘teste’};
 
-#### Fetch
+### Fetch
 
 - Envia requisições assíncronas para o servidor. Serve para acessarmos/escrevermos dados em apis externas.
 
@@ -391,7 +391,7 @@ fetch("https://ranekapi.origamid.dev/wp-json/api/produto")
   });
 ```
 
-#### Async / Await
+### Async / Await
 
 - Fetch retorna uma promisse. É possível criarmos funções assíncronas, que irão esperar a promisse resolver, antes de continuar com o código.
 
@@ -405,7 +405,7 @@ async function fetchProdutos(url) {
 fetchProdutos("https://ranekapi.origamid.dev/wp-json/api/produto");
 ```
 
-#### Expressões
+### Expressões
 
 - Fetch retorna uma promisse. É possível criarmos funções assíncronas, que irão esperar a promisse resolver, antes de continuar com o código.
 
@@ -421,7 +421,7 @@ const active = true;
 const button = active && "Botão está ativo";
 ```
 
-#### Extra
+### Extra
 
 - Sincrona → Executa uma atras da outra.
 - Assincrona → Varios processos simultaneamente.
@@ -431,9 +431,12 @@ const button = active && "Botão está ativo";
 
 ## :page_facing_up: Anotações -> React
 
-#### React Element
+### React Element
 
 -Todo elemento React é criado com a função createElement. O Babel é o responsável por transformar o elemento criado com JSX (que se parece com HTML) em funções de React.
+
+- Abaixo, temos 2 funções com o nome App() que serve como exemplo, na primeira função App() declaramos um <div>, ou seja, estamos usando o JSX que se parece com HTML, na segunda função App(), mostramos o que o babel faz na primeira função nos bastidores, ele transforma tudo que declaramos como JSX em um React.createElement.
+- Utilizamos o babel para converte nosso codigo JSX para React.createElement, ate porque seria verboso e dificil ficar declarando React.createElement, principalmente em casos que temos um elemento dentro do outro, logo o babel agiliza esse processo. -https://babeljs.io/repl
 
 ```javascript
 function App() {
@@ -449,7 +452,7 @@ function App() {
   <img alt="createElementReact" src="github/createlement.png" width="100%">
 </p>
 
-#### Componentes
+### Componentes
 
 - Permitem você dividir a sua interface em pequenos elementos. São criados através de funções que retornam elementos React ou classes que estendem React.Component e possuem o método render retornando um elemento React.
 
@@ -467,7 +470,8 @@ class Button extends React.Component {
 }
 ```
 
-#### Composição
+### Composição
+
 - O principal motivo de criarmos componentes é para podermos compor a interface com diversos componentes que podem ser reutilizados.
 
 ```javascript
@@ -494,13 +498,14 @@ const App = () => {
 };
 ```
 
-#### Eventos
+### Eventos
+
 - Podemos atribuir eventos diretamente aos elementos.
 
 ```javascript
 const Produtos = () => {
   function handleClick(event) {
-    alert('Comprou: ' + event.target.innerText);
+    alert("Comprou: " + event.target.innerText);
   }
 
   return (
@@ -512,7 +517,8 @@ const Produtos = () => {
 };
 ```
 
-#### Hooks
+### Hooks
+
 - Utilizamos o React pela facilidade de sincronização do estado. Antes dos Hooks, isso só era possível em componentes criados por meio de classes.
 
 ```javascript
@@ -529,3 +535,45 @@ const Compras = () => {
   );
 };
 ```
+
+### WebPack
+
+- Agrupa (bundle) o código do seu aplicativo
+- Permite definirmos os componentes em diferentes arquivos para melhor organização
+- Facilita a importação de código externo instalado via NPM
+- https://webpack.js.org/
+
+### Babel
+
+- Transforma JSX return <div></div> em funções de React React.createElement()
+- Transforma JavaScript novo const em JavaScript antigo var (tornando compativel)
+- https://babeljs.io/
+
+### npx create-react-app
+
+- Cria um ambiente de desenvolvimento já configurado e otimizado para a criação de aplicativos com React. https://create-react-app.dev/
+- npx é um comando do NPM que executa diretamente um pacote online, sem a necessidade de instalarmos o pacote na nossa máquina. A vantagem é que ele irá sempre instalar a versão mais atualizada do ambiente criado por create-react-app.
+
+```javascript
+npx create-react-app meuapp
+```
+
+### JSX
+
+- JavaScript XML / Extension. Estende a sintaxe do JavaScript, introduzindo elementos como XML que são convertidos em funções de React.
+
+```javascript
+const App = () => {
+  return <button>Comprar</button>;
+};
+```
+
+- É transformado em
+
+```javascript
+const App = () => {
+  return React.createElement("button", null, "Comprar");
+};
+```
+
+Obs: É possível utilizar a extensão .jsx
