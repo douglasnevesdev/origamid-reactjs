@@ -568,7 +568,7 @@ const App = () => {
 };
 ```
 
-- É transformado em
+É transformado em
 
 ```javascript
 const App = () => {
