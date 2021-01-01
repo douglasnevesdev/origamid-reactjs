@@ -577,3 +577,680 @@ const App = () => {
 ```
 
 Obs: É possível utilizar a extensão .jsx
+
+### JSX Arrays
+
+- O JSX ira lista cada um dos itens de array. Ele não irá separar ou colocar vírgula, é você que deve modificar o array para o resultado desejado.
+
+```javascript
+const App = () => {
+  const produtos = ["Notebook", "Tablet", "Smartphone"];
+  return <div>{produtos}</div>;
+};
+```
+
+### Keys
+
+- O JSX necessita de uma key única para cada elemento do Array, dessa forma o React consegue entender se você adicionou um item no array, ele compara as chaves e acrescenta/modifica o item novo sem precisar refazer todo o array, se ele não tiver a chave, ele não vai sabe como comparar, logo ele recria o array e lança uma exception no console.
+
+### Eventos
+
+- Podemos atribuir eventos diretamente aos elementos JSX como um atributo. Os eventos são sintáticos, ou seja, são criados pelo próprio React porém seguindo as especificações da W3C (e funcionam igualmente dos diversos browsers que o React suporta).
+- Funciona da mesma forma em todos os browsers que o React fornece suporte.
+
+#### window/document
+
+- Eventos no window/document ou qualquer elemento fora do React, devem ser adicionados com JavaScript normalmente, usando o addEventListener, o ideal é passar esse tipo de evento dentro do Hooks.
+
+```javascript
+const App = () => {
+  function handleClick(event) {
+    console.log(event.target);
+  }
+
+  window.addEventListener("scroll", handleScroll);
+
+  return (
+    <button onClick={(event) => alert(event.target.innerText)}>
+      Compre Violão
+    </button>
+  );
+};
+```
+
+### Componentes
+
+- O ideal é dividir o aplicativo em pequenos componentes para facilitar a manutenção do mesmo (organização, não influencia na performace), isso seria os componentes funcionais.
+- Não existe limite para a composição de componentes, eles podem ser desde componentes gerais como Heaedr e Footer, até micro componentes como Input e Button.
+- Um componente deve sempre retorna algo. O retorno pode ser qualquer tipo de dado aceitado pelo JSX (string, array, um elemento JSX, null e etc).
+
+### Propriedades
+
+- Assim como uma função pode receber argumentos, podemos também passar argumentos aos componentes. Esses são conhecimentos como propriedades ou props.
+
+```javascript
+const Titulo = (props) => {
+  return <h1 style={{ color: props.cor }}>{props.texto}</h1>;
+};
+
+const App = () => {
+  return (
+    <section>
+      <Titulo texto="Meu Primeiro Título" cor="blue" />
+      <Titulo texto="Meu Segundo Título" cor="red" />
+    </section>
+  );
+};
+```
+
+É comum desestruturarmos as propriedades.
+
+```javascript
+const Titulo = ({ cor, texto }) => {
+  return <h1 style={{ color: cor }}>{texto}</h1>;
+};
+
+const App = () => {
+  return (
+    <section>
+      <Titulo texto="Meu Primeiro Título" cor="blue" />
+      <Titulo texto="Meu Segundo Título" cor="red" />
+    </section>
+  );
+};
+```
+
+#### Children
+
+Se utilizamos o componente abrindo e fechando o mesmo, o conteúdo internomdeste será através da propriedade children.
+
+```javascript
+const Titulo = (props) => {
+  return <h1>{props.children}</h1>;
+};
+
+const App = () => {
+  return (
+    <section>
+      <Titulo>Meu Primeiro Título</Titulo>
+      <Titulo>
+        <p>Título 2</p>
+        <p>Título 3</p>
+      </Titulo>
+    </section>
+  );
+};
+```
+
+#### Rest e Spread
+
+Usamos o rest e spread quando não sabemos todas as propriedades que um componente pode receber.
+
+```javascript
+import React from "react";
+
+const Input = ({ label, id, ...props }) => {
+  return (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input id={id} type="text" {...props} />
+    </div>
+  );
+};
+
+export default Input;
+```
+
+- Podemos passar diferentes tipos de dados e até outros componentes nas propriedades, exemplo array.
+
+## :page_facing_up: Anotações -> React Hooks
+
+### Estado
+
+- O estado de uma aplicação representa as características dela naquele momento. Por exemplo: os dados do usuário foram carregados, o botão está ativo, o usuário está na página de contato e etc.
+
+```javascript
+const App = () => {
+  const ativo = true;
+
+  return (
+    <button disabled={!ativo}>{ativo ? "Botão Ativo" : "Botão Inativo"}</button>
+  );
+};
+```
+
+### Hooks
+
+- Os Hooks são funções especiais do React que permitem controlarmos o estado e o ciclo de vida de componentes funcionais. Isso antes só era possível com classes.
+
+```javascript
+const App = () => {
+  const [ativo, setAtivo] = React.useState(true);
+
+  return (
+    <button onClick={() => setAtivo(!ativo)}>
+      {ativo ? "Botão Ativo" : "Botão Inativo"}
+    </button>
+  );
+};
+```
+
+### Props
+
+- Podemos passar o estado e a função de modificação como propriedades para outros elementos.
+
+```javascript
+import React from "react";
+import Modal from "./Modal";
+import ButtonModal from "./ButtonModal";
+
+const App = () => {
+  const [modal, setModal] = React.useState(false);
+
+  return (
+    <div>
+      <Modal modal={modal} setModal={setModal} />
+      <ButtonModal setModal={setModal} />
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Reatividade
+
+- Não modifique o estado diretaemente. utilize sempre a função de atualização do estado, pois ela que garante a reatividade dos componentes ( Reatividade é renderiza todos os componentes que depende do estado ).
+
+### CallBack
+
+- Podemos passar uma função de callback para atualizar o estado. A função de callback recebe um parâmetro que representa o valor anterior e irá modificar o estado para o valor que for retornado na função.
+
+```javascript
+const App = () => {
+  const [ativo, setAtivo] = React.useState(true);
+
+  function handleClick() {
+    // usando um callback
+    setAtivo((anterior) => !anterior);
+  }
+
+  return (
+    <button onClick={handleClick}>
+      {ativo ? "Está Ativo" : "Está Inativo"}
+    </button>
+  );
+};
+```
+
+### React.StrictMode
+
+- O modo estrito invoca duas vezes a renderização do componente, quando o estado é atualizado. Assim é possível identificarmos funções com efeitos coláterais (side effects) e eliminarmos as mesmas.
+- Funções com efeitos coláterais são aquelas que modificam estados que estão fora das mesmas.
+- Fica ativo apenas no modo de desenvolvimento.
+- Exibe 2 vezes no console.
+
+```javascript
+const Contador = () => {
+  const [contar, setContar] = React.useState(1);
+  const [items, setItems] = React.useState(["Item 1"]);
+
+  function handleClick() {
+    setContar((contar) => {
+      // setContar possui um efeito colateral.
+      setItems((items) => [...items, "Item " + (contar + 1)]);
+      return contar + 1;
+    });
+    // Tirar o efeito de dentro do setContar irá concertar o erro
+    // setItems((items) => [...items, 'Item ' + (contar + 1)]);
+  }
+
+  return (
+    <>
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+      <button onClick={handleClick}>{contar}</button>
+    </>
+  );
+};
+```
+
+### useEffect
+
+- Todo componente possui um ciclo de vida. Os principais momentos acontecem quando o componente é renderiado, atualizado ou destruído. com o React.useEffect() podemos definir um callback que irá ser executado durante certos momentos do ciclo de vida do componente.
+
+```javascript
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log("Ocorre ao renderizar e ao atualizar");
+  });
+
+  return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
+};
+```
+
+- Se utilizarmos o valor de um hook( Ex: useState ) ou propriedade dentro de um efeito, ele irá indicar a necessidade de definirmos o mesmo como uma dependência no array.
+- Podemos ter diversos useEffect no nosso código. O ideal é separarmos efeitos diferentes em useEffect diferentes.
+- Se o useEffect tiver um return, esse sera executado quando o componente sumir da tela, se tiver [] como parametro, essa função sera executada apenas uma vez ao iniciar e se tiver [variavel_de_estado] a função sera executada toda vez que o estado da variavel mudar.
+- O callback do useEffect é executado depois da inicialização do componente.
+
+```javascript
+const Produto = () => {
+  // Utilizamos o useEffect para adicionarmos eventos direto ao DOM
+  React.useEffect(() => {
+    function handleScroll(event) {
+      console.log(event);
+    }
+    window.addEventListener("scroll", handleScroll);
+    // Limpa o evento quando o elemento é removido do DOM.
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return <p style={{ height: "200vh" }}>Produto</p>;
+};
+```
+
+### useRef
+
+- Retorna um objeto com a propriedade current. Esse objeto pode ser utilizado para guardarmos valores que irão persistir durante todo o ciclo de vida do elemento. Geralmente usamos o mesmo para nos referirmos a um elemento do DOM, sem precisarmos utilizar o querySelector ou similar.
+
+```javascript
+const App = () => {
+  const video = React.useRef();
+
+  React.useEffect(() => {
+    console.log(video.current);
+  }, []);
+
+  return <video ref={video}></video>;
+};
+```
+
+- O seu uso não é restrito a elementos do dom. Podemos utilizar também para guardarmos a referência de qualquer valor, como de um setTimeout por exemplo.
+- O valor de referencia não sera perdido com o carregamento do componente.
+
+```javascript
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+  const [notificacao, setNotificacao] = React.useState(null);
+  const timeoutRef = React.useRef();
+
+  function handleClick() {
+    setNotificacao("Obrigado por comprar");
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setNotificacao(null);
+    }, 1000);
+    setContar(contar + 1);
+  }
+
+  return (
+    <div>
+      <p>{notificacao}</p>
+      <button onClick={handleClick}>{contar}</button>
+    </div>
+  );
+};
+```
+
+### useMemo
+
+- Memoriza um valor, evitando a recriação do mesmo todas as vezes em que um componente for atualizado. Recebe um callback e uma array de dependências.
+- Recebe um callback que retorna um valor, esse valor sera salvo na memoria, não sera executada novamente a função quando o componente for atualizado, ou seja, so executa na criação, é utilizado para operações lentas no javascript, isso não seria operações assincronas e sim operações matematicas como somas em arrays ou algo do tipo.
+
+```javascript
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+  const valor = React.useMemo(() => {
+    const localStorageItem = window.localStorage.getItem("produto");
+    // só será executado uma vez
+    console.log("teste");
+    return localStorageItem;
+  }, []);
+  console.log(valor);
+
+  return <button onClick={() => setContar(contar + 1)}>{valor}</button>;
+};
+```
+
+```javascript
+function operacaoLenta() {
+  let c;
+  for (let i = 0; i < 100000000; i++) {
+    c = i + i / 10;
+  }
+  return c;
+}
+
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+  const t1 = performance.now();
+  const valor = React.useMemo(() => operacaoLenta(), []);
+  // é mais rápido que
+  // const valor = operacaoLenta();
+  console.log(performance.now() - t1);
+
+  return <button onClick={() => setContar(contar + 1)}>{valor}</button>;
+};
+```
+
+### useCallback
+
+- Permite definirmos um callback e uma lista de dependências do callback. Esse callback só será recriado se essa lista de dependências for modificada, caso contrário ele não irá recriar o callback.
+
+```javascript
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+
+  const handleClick = React.useCallback(() => {
+    setContar((contar) => contar + 1);
+  }, []);
+
+  return <button onClick={handleClick}>{contar}</button>;
+};
+```
+
+- Uma prova de que o useCallback não irá criar uma nova função. Isso não significa que ele é mais ou menos otimizado. O Set() é utilizado pois ele permite apenas valores únicos dentro do mesmo.
+
+```javascript
+const set1 = new Set();
+const set2 = new Set();
+
+const Produto = () => {
+  const func1 = () => {
+    console.log("Teste");
+  };
+
+  const func2 = React.useCallback(() => {
+    console.log("Teste");
+  }, []);
+
+  set1.add(func1);
+  set2.add(func2);
+
+  console.log("Set1:", set1);
+  console.log("Set2:", set2);
+  return (
+    <div>
+      <p onClick={func1}>Produto 1</p>
+      <p onClick={func2}>Produto 2</p>
+    </div>
+  );
+};
+
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+
+  return (
+    <div>
+      <Produto />
+      <button onClick={() => setContar(contar + 1)}>{contar}</button>
+    </div>
+  );
+};
+```
+
+### createContext
+
+- O contexto irá permitir passarmos dados/estado a todos os componentes, sem a necessidade de utilizar propriedades. Serve principalmente para dodos/estados globais como por exemplo dados do usuário logado.
+
+```javascript
+import React from "react";
+
+const UserContext = React.createContext();
+
+export default UserContext;
+```
+
+- Utilizamos o contexto normalmente na parte global da aplicação, exemplo App.js ou na parte que você quer que tenha acesso ao contexto.
+
+#### Provider
+
+- O método Provider deve ser utilizado para envolver todos os elementos que terão acesso aos dados do Context. Provider recebe uma propriedade chamada value, dentro dela que devemos informar os dados do contexto, ou seja, os dados que serão compartilhados entre todos os componentes.
+
+```javascript
+import React from "react";
+import Produto from "./Produto";
+import UserContext from "./UserContext";
+
+const App = () => {
+  return (
+    <UserContext.Provider value={{ nome: "André" }}>
+      <Produto />
+    </UserContext.Provider>
+  );
+};
+
+export default App;
+```
+
+### useContext
+
+- O useContext é o hook que deve ser utilizado para consumirmos o contexto e termos assim acesso aos dados de value. Devemos passar o contexto criado como seu agumento.
+
+```javascript
+import React from "react";
+import UserContext from "./UserContext";
+
+const Produto = () => {
+  const user = React.useContext(UserContext);
+
+  return <p>Produto de: {user.nome}</p>;
+};
+
+export default Produto;
+```
+
+#### GlobalStorage
+
+- Exemplo de uso real do context. Podemos passar qualquer coisa no value do context, até estados e funções atualizadoras do useState.
+
+```javascript
+import React from "react";
+import Produto from "./Produto";
+import { GlobalStorage } from "./GlobalContext";
+
+const App = () => {
+  return (
+    <GlobalStorage>
+      <Produto />
+    </GlobalStorage>
+  );
+};
+
+export default App;
+```
+
+```javascript
+import React from "react";
+
+export const GlobalContext = React.createContext();
+
+export const GlobalStorage = ({ children }) => {
+  const [carrinho, setCarrinho] = React.useState(0);
+
+  return (
+    <GlobalContext.Provider value={{ carrinho, setCarrinho }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+};
+```
+
+```javascript
+import React from "react";
+import { GlobalContext } from "./GlobalContext";
+
+const Produto = () => {
+  const global = React.useContext(GlobalContext);
+
+  function handleClick() {
+    global.setCarrinho((carrinho) => carrinho + 1);
+  }
+
+  return (
+    <p>
+      Total: {global.carrinho}: <button onClick={handleClick}>Adicionar</button>
+    </p>
+  );
+};
+
+export default Produto;
+```
+
+#### Custom Hooks
+
+- Podemos criar nossos próprios hooks, assim evitamos a repetição de código. Todo custom hook deve começar com a palabra use. Exemplo: useNomeDoHook. Podemos retornar o que quisermos do hook, seha um valor único, um array ou um objeto.
+
+```javascript
+const useLocalStorage = (key, inicial) => {
+  const [state, setState] = React.useState(() => {
+    const local = window.localStorage.getItem(key);
+    return local ? local : inicial;
+  });
+
+  React.useEffect(() => {
+    window.localStorage.setItem(key, state);
+  }, [key, state]);
+
+  return [state, setState];
+};
+```
+
+```javascript
+import useLocalStorage from "./useLocalStorage";
+
+const App = () => {
+  const [produto, setProduto] = useLocalStorage("produto", "");
+
+  function handleClick({ target }) {
+    setProduto(target.innerText);
+  }
+
+  return (
+    <div>
+      <p>Preferido: {produto}</p>
+      <button onClick={handleClick}>notebook</button>
+      <button onClick={handleClick}>smartphone</button>
+    </div>
+  );
+};
+```
+
+- Aqui o useCallback é necessário para evitar um render infinito.
+
+```javascript
+import React from "react";
+
+const useFetch = () => {
+  const [data, setData] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(null);
+
+  const request = React.useCallback(async (url, options) => {
+    let response;
+    let json;
+    try {
+      setError(null);
+      setLoading(true);
+      response = await fetch(url, options);
+      json = await response.json();
+      if (response.ok === false) throw new Error(json.message);
+    } catch (err) {
+      json = null;
+      setError(err.message);
+    } finally {
+      setData(json);
+      setLoading(false);
+      return { response, json };
+    }
+  }, []);
+
+  return { data, loading, error, request };
+};
+
+export default useFetch;
+```
+
+```javascript
+import React from "react";
+import useFetch from "./useFetch";
+
+const App = () => {
+  const { data, loading, error, request } = useFetch();
+
+  React.useEffect(() => {
+    request("https://ranekapi.origamid.dev/json/api/produto/notebook");
+  }, [request]);
+
+  if (error) return <p>{error}</p>;
+  if (loading) return <p>Carregando...</p>;
+  if (data) return <div>{data.nome}</div>;
+  else return null;
+};
+
+export default App;
+```
+
+#### Regras
+
+- Não utilize os hooks dentro de funções, loops ou condicionais.
+
+```javascript
+const App = () => {
+  // Correto
+  React.useEffect(() => {
+    document.title = "Título novo";
+  }, []);
+
+  let condicao = true;
+  if (condicao) {
+    // Errado
+    React.useEffect(() => {
+      document.title = "Título novo";
+    }, []);
+  }
+
+  function mudarTitulo() {
+    // Errado
+    React.useEffect(() => {
+      document.title = "Título novo";
+    }, []);
+  }
+
+  for (let i = 0; i < 10; i++) {
+    // Errado
+    React.useEffect(() => {
+      document.title = "Título novo";
+    }, []);
+  }
+
+  return <div></div>;
+};
+```
+
+- Utilize hooks apenas em componentes e em custom hooks.
+
+```javascript
+import React from "react";
+
+// Errado, mas pode se transformar em um custom hook se começar com useNumeroAleatorio
+function numeroAleatorio() {
+  const numero = Math.random();
+  React.useEffect(() => {
+    document.title = numero;
+  }, []);
+  return numero;
+}
+
+const App = () => {
+  return <div></div>;
+};
+
+export default App;
+```
