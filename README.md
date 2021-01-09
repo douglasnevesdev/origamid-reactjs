@@ -1935,3 +1935,1222 @@ const App = () => {
 
 export default App;
 ```
+
+## :page_facing_up: Anotações -> CSS no React
+
+### CSS
+
+- A forma mais simples de uso do CSS é importanto o mesmo direto no Javascript. A importação é efetuada pelo WebPack.
+- Ao importar um componentes, os estilos importados do mesmo são automaticamente adicionados ao CSS final da build. Independente de você utilizar o componente ou não.
+- Todos os arquivos serão unidos em um CSS final e você é responsável por garantir que os seletores sejam específicos, para evitar conflito.
+
+#### CSS Modules
+
+- É uma especificação, os modules garantem que as classes utilizada sejam sempre únicas, evitando o conflito. O modo já vem configurando com o create-react-app, basta definirmos o nome do arquivo css com a palabra .module. Ex: Produto.module.css. Devemos definir um nome para a impotação, a mesma será transformada em um objeto que possui nomes únicos para as classes.
+
+```css
+import styles from './Produto.module.css';
+
+const Produto = () => {
+  return (
+    <div>
+      <h1 className={styles.titulo}>Notebook</h1>
+      <p className={styles.preco}>R$ 12000</p>
+      <button className={styles.comprar}>Comprar</button>
+    </div>
+  );
+};
+```
+
+- Utilize camelCase tituloPrincipal, já que o nome da classe se transformará em uma propriedade de um objeto JavaScript. Não utilize hífens titulo-principal.
+
+- O CSS Modules disponibiliza algumas funcionalidades extras para o CSS, como a definição de variáveis, composição de elementos e definição de classes no contexto global. Não aconselho o uso, pois a sintaxe não é bem suportada pela IDE (VS Code) e pelo eslint.
+
+```css
+@value width: 900px;
+```
+
+- Se precisar pode usar o css nativo
+
+```css
+.body {
+  --cor: red;
+}
+.preco {
+  color: var(--cor);
+}
+```
+
+- Quando estamos desenvolvendo ele insere o css no corpo do arquivo e quando fazemos o build ele cria o arquivo .css
+
+#### Styled Components
+
+- Permite escrevermos o CSS diretamente no JavaScript. Ao invés de classes, criamos componentes com um estilo único.
+- Precisa de um plugin + biblioteca.
+- O styled é um objeto com diferentes métodos que representam as tags de HTML.
+- O uso dos backticks para passarmos a string com os valores do CSS, é válido no JavaScript. Esses valores são passados como argumento da função.
+
+```javascript
+function template(value, total) {
+  console.log(value);
+  console.log(total);
+}
+const total = 10;
+template`São ${total} no total`;
+```
+
+- Podemos passar propriedades como em um component de React.
+
+```javascript
+const Preco = styled.p`
+  background: ${(props) => props.cor};
+  color: white;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 0.5rem;
+`;
+
+const App = () => {
+  function template(value, total) {
+    console.log(value);
+    console.log(total);
+  }
+  const total = 10;
+  template`São ${total} no total`;
+
+  return (
+    <div>
+      <Preco cor="#53d956">R$ 2999</Preco>
+      <Preco cor="#84e">R$ 1999</Preco>
+    </div>
+  );
+};
+```
+
+- Podemos passar o estado como uma propriedade e modificarmos certos estilos com base no mesmo.
+
+```javascript
+import styled from "styled-components";
+
+const Button = styled.button`
+  background: ${({ ativo }) => (ativo ? "#53d956" : "#000")};
+  border: 1px solid black;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+`;
+
+const App = () => {
+  const [ativo, setAtivo] = React.useState(false);
+
+  return (
+    <Button ativo={ativo} onClick={() => setAtivo(!ativo)}>
+      Ativar
+    </Button>
+  );
+};
+```
+
+- Podemos definir o estado de :hover ou criar elementos com o ::after ou ::before utilizando o & na frente do elemento.
+
+```javascript
+const Comprar = styled.button`
+  font-size: 1.5em;
+  background: transparent;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 2px solid black;
+  cursor: pointer;
+  position: relative;
+  &:hover {
+    background: black;
+    color: white;
+  }
+  &::before {
+    display: block;
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    background: #53d956;
+    top: -8px;
+    right: -8px;
+  }
+`;
+```
+
+### CSS Framework
+
+- Podemos adicionar qualquer library/framework de css ao React. Com o @next vamos instalar a versão 5 do bootstrap. Popper é necessário para algumas funções do bootstrap.
+
+```javascript
+npm install bootstrap@next
+```
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+```
+
+```javascript
+import React from "react";
+
+const App = () => {
+  return (
+    <div className="card bg-dark text-white m-5" style={{ maxWidth: "18rem" }}>
+      <div className="card-header">Notebook</div>
+      <div className="card-body">
+        <h5 className="card-title">R$ 2500</h5>
+        <p className="card-text">
+          Esse é um notebook com 1tb, 16gb de ram e placa de vídeo de 16gb.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default App;
+```
+
+#### Componentes
+
+- Existem frameworks de CSS que te fornecem componentes prontos para serem utilizados no local de classes. O react-bootstrap utiliza em sua base o bootstrap, mas fornece componentes React.
+
+```javascript
+npm install react-bootstrap bootstrap
+```
+
+```javascript
+import React from "react";
+import Card from "react-bootstrap/Card";
+
+const App = () => {
+  return (
+    <Card bg="dark" text="white" style={{ maxWidth: "18rem" }} className="m-5">
+      <Card.Header>Notebook</Card.Header>
+      <Card.Body>
+        <Card.Title>R$ 2500</Card.Title>
+        <Card.Text>
+          Esse é um notebook com 1tb, 16gb de ram e placa de vídeo de 16gb.
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  );
+};
+
+export default App;
+```
+
+#### Animações
+
+- Anime a entrada de elementos utilizando a propriedade animation.
+
+```javascript
+.animeLeft {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: animeLeft 0.3s forwards;
+}
+
+@keyframes animeLeft {
+  to {
+    opacity: initial;
+    transform: initial;
+  }
+}
+```
+
+```javascript
+const App = () => {
+  const [ativar, setAtivar] = React.useState(false);
+
+  return (
+    <div>
+      <button onClick={() => setAtivar(!ativar)}>Ativar</button>
+      {ativar && <Produto />}
+    </div>
+  );
+};
+```
+
+```javascript
+const Produto = () => {
+  return (
+    <div className="animeLeft">
+      <h1>Notebook</h1>
+      <span>R$ 2000</span>
+    </div>
+  );
+};
+```
+
+- Anime a entrada de elementos utilizando a propriedade animation.
+
+```javascript
+.container {
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.item {
+  flex-shrink: 0;
+  width: 80%;
+  margin: 0 10%;
+  border-radius: 4px;
+  background-color: #eee;
+  text-align: center;
+  padding: 10rem 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 1rem auto;
+}
+```
+
+```javascript
+import React from "react";
+import styles from "./Slide.module.css";
+
+const Slide = ({ slides }) => {
+  const [active, setActive] = React.useState(0);
+  const [position, setPosition] = React.useState(0);
+  const contentRef = React.useRef();
+
+  React.useEffect(() => {
+    const { width } = contentRef.current.getBoundingClientRect();
+    setPosition(-(width * active));
+  }, [active]);
+
+  function slidePrev() {
+    if (active > 0) setActive(active - 1);
+  }
+
+  function slideNext() {
+    if (active < slides.length - 1) setActive(active + 1);
+  }
+
+  return (
+    <section className={styles.container}>
+      <div
+        ref={contentRef}
+        className={styles.content}
+        style={{ transform: `translateX(${position}px)` }}
+      >
+        {slides.map((slide) => (
+          <div key={slide.id} className={styles.item}>
+            {slide.text}
+          </div>
+        ))}
+      </div>
+      <nav className={styles.nav}>
+        <button onClick={slidePrev}>Anterior</button>
+        <button onClick={slideNext}>Próximo</button>
+      </nav>
+    </section>
+  );
+};
+
+export default Slide;
+```
+
+```javascript
+import React from "react";
+import "./App.css";
+import Slide from "./Slide";
+
+const App = () => {
+  const slides = [
+    {
+      id: "slide1",
+      text: "Slide 1",
+    },
+    {
+      id: "slide2",
+      text: "Slide 2",
+    },
+    {
+      id: "slide3",
+      text: "Slide 3",
+    },
+  ];
+
+  return (
+    <div>
+      <Slide slides={slides} />
+    </div>
+  );
+};
+
+export default App;
+```
+
+#### Imagens
+
+- Podemos importar a imagem direto para o componente. O webpack irá gerar o caminho correto na build final.
+- No CSS podemos utilizar o caminho direto. É importante colocar o ./, pois o webpack vai utilizar isso e substituir para o caminho final do site.
+- Um svg pode ser adicionado da mesma forma que as anteriores, porém ele também pode ser adicionado como um componente. Dessa forma o código do SVG inteiro é injetado direto no HTML, dando maior controle sobre o mesmo.
+
+```javascript
+import { ReactComponent as Dog } from "./img/dog.svg";
+
+const App = () => {
+  return (
+    <div>
+      <Dog />
+    </div>
+  );
+};
+```
+
+- Além da importação direto como componentes, podemos também definirmos cada SVG como um componente. Lembre-se, propriedades que tiverem hífens serão modificadas: fill-rule vira fillRule
+
+```javascript
+const DogSvg = ({ color }) => {
+  return (
+    <svg
+      width="28"
+      height="22"
+      viewBox="0 0 28 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14 10h1.652c1.708 0 2.63 2.004 1.518 3.302l-1.618 1.887A4.501 4.501 0 0024.5 14.5a1.5 1.5 0 013 0A7.5 7.5 0 0114 19 7.5 7.5 0 01.5 14.5a1.5 1.5 0 013 0 4.5 4.5 0 008.948.689l-1.618-1.887C9.718 12.004 10.64 10 12.35 10H14z"
+        fill={color}
+      />
+      <circle cx="21" cy="3" r="3" fill={color} />
+      <circle cx="7" cy="3" r="3" fill={color} />
+    </svg>
+  );
+};
+```
+
+## :page_facing_up: Anotações -> React Router
+
+### Router
+
+- É uma extensão que permite gerenciarmos as rotas do React. Ela é desenvolvida e mantida pela empresa React Trainning.
+
+- https://reacttraining.com/react-router/
+
+- https://github.com/ReactTraining/react-router/blob/dev/docs/api-reference.md
+
+```javascript
+npm install history react-router-dom@next
+```
+
+#### BrowserRouter, Routes e Route
+
+- O BrowserRouter deve ser o componente pai que envolve tudo que depender do react-router. O Routes define a área em que vamos colocar os nossos Route. O Route recebe um caminho em path, se esse caminho for o mesmo do URL ele irá renderizar o component que estiver dentro de element={}.
+
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Contato from "./Contato";
+import Sobre from "./Sobre";
+import Home from "./Home";
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="sobre" element={<Sobre />} />
+        <Route path="contato" element={<Contato />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+#### 404 - Não Encontrado
+
+- O \* renderiza um elemento para todas as rotas que não foram definidas em path. Uso ideal para mostrarmos um componente indicando que a página não existe.
+
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Sobre from "./Sobre";
+import Pagina404 from "./Pagina404";
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="sobre" element={<Sobre />} />
+        <Route path="*" element={<Pagina404 />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+### Link
+
+- O Link irá modificar a rota e renderizar o novo componente sem recarregar a página.
+
+```javascript
+import { Link } from "react-router-dom";
+
+const Header = () => {
+  return (
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="sobre">Sobre</Link>
+      <Link to="contato">Contato</Link>
+    </nav>
+  );
+};
+```
+
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./Header";
+import Home from "./Home";
+import Sobre from "./Sobre";
+import Contato from "./Contato";
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="sobre" element={<Sobre />} />
+        <Route path="contato" element={<Contato />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+#### NavLink
+
+- O NavLink funciona da mesma forma, mas adiciona uma classe ao link que estiver ativo. É necessário colocar o end no NavLink responsável por navegar para a raiz do app.
+
+```javascript
+import "./Header.css";
+import { NavLink } from "react-router-dom";
+
+const Header = () => {
+  const activeStyle = {
+    color: "tomato",
+  };
+  return (
+    <nav>
+      <NavLink to="/" end activeStyle={activeStyle}>
+        Home
+      </NavLink>
+      <NavLink to="sobre" activeStyle={activeStyle}>
+        Sobre
+      </NavLink>
+      <NavLink to="contato" activeStyle={activeStyle}>
+        Contato
+      </NavLink>
+    </nav>
+  );
+};
+```
+
+#### useNavigate
+
+- O hook useNavigate permite navegarmos programaticamente entre as rotas. Por exemplo, pode ser utilizado quando o usuário faz um login bem sucedido e enviamos o mesmo a página da sua conta.
+
+```javascript
+import { useNavigate } from "react-router-dom";
+
+const Login = () => {
+  const navigate = useNavigate();
+
+  function handleClick() {
+    console.log("Faz o login");
+    navigate("/sobre");
+  }
+
+  return (
+    <div>
+      <button onClick={handleClick}>Login</button>
+    </div>
+  );
+};
+```
+
+### useParams
+
+#### Rota Dinâmica
+
+- O uso de :nome irá definir uma rota dinâmica, onde o nome poderá ser utilizado como uma variável dentro do componente. Serve para buscarmos rotas dinâmicas como produto/notebook ou produto/smartphone.
+
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Produto from "./Produto";
+import Home from "./Home";
+import Header from "./Header";
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="produto/:id" element={<Produto />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+#### UseParams
+
+- O hook useParams terá um objeto com todos os parâmetros da rota. É possível ter mais de um parâmetro.
+
+```javascript
+import { useParams } from "react-router-dom";
+
+const Produto = () => {
+  const params = useParams();
+
+  return (
+    <div>
+      <h1>Produto</h1>
+      <p>id: {params.id}</p>
+    </div>
+  );
+};
+```
+
+#### useLocation
+
+- Retorna o objeto location, com diversas informações sobre a rota atual, como o caminho, parâmetros de busca e mais.
+
+```javascript
+import { useLocation } from "react-router-dom";
+
+const Header = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    const search = new URLSearchParams(location.search);
+    console.log(search.get("q"));
+    console.log("Toda vez que a rota mudar");
+  }, [location]);
+
+  return <div></div>;
+};
+```
+
+```javascript
+const [searchParams, setSearchParams] = useSearchParams();
+```
+
+### Nested Routes
+
+- Utilizamos nested routes quando precizamos de rotas dentro de rotas. Como por exemplo: perfil/editar e perfil/certificados e etc. Utilize o \* para definir que existem outras rotas dentro.
+
+```javascript
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import Sobre from './Sobre';
+import Login from './Login';
+import Produto from './Produto';
+import Header from './Header';
+import NaoEncontrada from './NaoEncontrada';
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="sobre" element={<Sobre />} />
+        <Route path="login" element={<Login />} />
+        <Route path="produto/:id/*" element={<Produto />} />
+        <Route path="*" element={<NaoEncontrada />} />
+      </Routes>
+    </BrowserRouter>
+  );
+```
+
+```javascript
+import { useParams, Route, Routes, NavLink } from "react-router-dom";
+import ProdutoDescricao from "./ProdutoDescricao";
+import ProdutoAvaliacao from "./ProdutoAvaliacao";
+import ProdutoCustomizado from "./ProdutoCustomizado";
+
+const Produto = () => {
+  const params = useParams();
+
+  return (
+    <div>
+      <h1>Produto: {params.id}</h1>
+      <nav>
+        <NavLink to="">Descrição</NavLink>
+        <NavLink to="avaliacao">Avaliação</NavLink>
+        <NavLink to="customizado">Customizado</NavLink>
+      </nav>
+      <Routes>
+        <Route path="/" element={<ProdutoDescricao />} />
+        <Route path="avaliacao" element={<ProdutoAvaliacao />} />
+        <Route path="customizado" element={<ProdutoCustomizado />} />
+      </Routes>
+    </div>
+  );
+};
+```
+
+#### Outlet
+
+- Outra forma é definindo todos as rotas diretamente no App e utilizar o component Outlet para mostrarmos a rota.
+
+```javascript
+const Produto = () => {
+  const params = useParams();
+
+  return (
+    <div>
+      <h1>Produto: {params.id}</h1>
+      <nav>
+        <NavLink to="">Descrição</NavLink>
+        <NavLink to="avaliacao">Avaliação</NavLink>
+        <NavLink to="customizado">Customizado</NavLink>
+      </nav>
+      <Outlet />
+    </div>
+  );
+};
+```
+
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import Sobre from "./Sobre";
+import Login from "./Login";
+import Produto from "./Produto";
+import Header from "./Header";
+import NaoEncontrada from "./NaoEncontrada";
+import ProdutoDescricao from "./ProdutoDescricao";
+import ProdutoAvaliacao from "./ProdutoAvaliacao";
+import ProdutoCustomizado from "./ProdutoCustomizado";
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="sobre" element={<Sobre />} />
+        <Route path="login" element={<Login />} />
+        <Route path="produto/:id/*" element={<Produto />}>
+          <Route path="/" element={<ProdutoDescricao />} />
+          <Route path="avaliacao" element={<ProdutoAvaliacao />} />
+          <Route path="customizado" element={<ProdutoCustomizado />} />
+        </Route>
+        <Route path="*" element={<NaoEncontrada />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+### Head
+
+- No React não temos acesso direto as tags e informações do Head. Porém com o uso de rotas é essêncial realizar a mudança do título e descrição para cada rota. Podemos fazer isso através de um componente ou custom hook.
+
+```javascript
+const Head = (props) => {
+  React.useEffect(() => {
+    document.title = props.title;
+    document
+      .querySelector("meta[name='description']")
+      .setAttribute("content", props.description);
+  }, [props]);
+
+  return <></>;
+};
+```
+
+```javascript
+import Head from "./Head";
+
+const Sobre = () => {
+  return (
+    <div>
+      <Head title="Página Sobre" description="Descrição da sobre" />
+      <h1>Sobre</h1>
+      <p>Essa é a Sobre</p>
+    </div>
+  );
+};
+```
+
+```javascript
+import Head from "./Head";
+
+const Home = () => {
+  return (
+    <div>
+      <Head title="Página Home" description="Descrição da home" />
+      <h1>Home</h1>
+      <p>Essa é a home</p>
+    </div>
+  );
+};
+```
+
+### Helmet
+
+- Uma extensão famosa é o react-helmet. Ela retonar com componente em que você pode definir tags do Head dentro do mesmo.
+- https://github.com/nfl/react-helmet
+
+```javascript
+npm install react-helmet
+```
+
+```javascript
+import { Helmet } from "react-helmet";
+
+const Home = () => {
+  return (
+    <div>
+      <Helmet>
+        <title>Página Home</title>
+        <meta name="description" content="Conteúdo da descrição" />
+      </Helmet>
+      <h1>Home</h1>
+      <p>Essa é a home</p>
+    </div>
+  );
+};
+```
+
+## :page_facing_up: Anotações -> Mais React
+
+### PropTypes
+
+- O PropTypes irá retornar um erro caso o valor da propriedade passada seja um tipo de dado diferente do especificado. É também possível especificar se uma propriedade é obrigatória ou não. O prop-types já vem instalado no create-react-app, basta importarmos o mesmo para utilizarmos.
+- https://reactjs.org/docs/typechecking-with-proptypes.html
+
+```javascript
+import React from "react";
+import PropTypes from "prop-types";
+
+const Button = (props) => {
+  return (
+    <button
+      style={{
+        margin: props.margin,
+        width: `${props.width}px`,
+        height: `${props.width / 3}px`,
+      }}
+      disabled={props.disabled}
+    >
+      {props.children}
+    </button>
+  );
+};
+
+Button.propTypes = {
+  margin: PropTypes.string.isRequired,
+  width: PropTypes.number,
+  disabled: PropTypes.bool,
+};
+
+export default Button;
+```
+
+```javascript
+import Button from "./Button";
+
+const App = () => {
+  return (
+    <div>
+      <h1>Meu App</h1>
+      <Button margin="10px" width={300}>
+        Clique Aqui
+      </Button>
+    </div>
+  );
+};
+```
+
+#### defaultProps
+
+- Podemos também definir valores padrões para as propriedades através do defaultProps. Não é necessário o uso do prop-types para definirmos uma propriedade padrão. Isso faz parte do React.
+
+```javascript
+import PropTypes from "prop-types";
+
+const Button = (props) => {
+  return (
+    <button
+      style={{
+        margin: props.margin,
+        width: `${props.width}px`,
+        height: `${props.width / 3}px`,
+      }}
+      disabled={props.disabled}
+    >
+      {props.children}
+    </button>
+  );
+};
+
+Button.defaultProps = {
+  width: 200,
+  disabled: false,
+};
+
+Button.propTypes = {
+  margin: PropTypes.string.isRequired,
+  width: PropTypes.number,
+  disabled: PropTypes.bool,
+};
+
+export default Button;
+```
+
+### Lazy e Suspense
+
+#### Code Splitting
+
+- Com o Lazy e Suspense podemos dividir o código da nossa aplicação. Assim o React só irá carregar certas partes do código, quando as mesmas forem necessárias.
+
+```javascript
+import React from "react";
+const Contato = React.lazy(() => import("./Contato"));
+
+const App = () => {
+  const [ativar, setAtivar] = React.useState(false);
+
+  return (
+    <div>
+      {ativar && (
+        <React.Suspense fallback={<div>Carregando...</div>}>
+          <Contato />
+        </React.Suspense>
+      )}
+      <button onClick={() => setAtivar(true)}>Ativar</button>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Memo
+
+- Retorna um componente memorizado, evitando que o mesmo seja atualizado toda vez que o estado de um elemento pai mudar. Use apenas para elementos que não dependam de estados diferentes.
+
+```javascript
+import React from "react";
+import Header from "./Header";
+
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+  return (
+    <div>
+      <Header />
+      <button onClick={() => setContar(contar + 1)}>{contar}</button>
+    </div>
+  );
+};
+
+export default App;
+```
+
+```javascript
+import React from "react";
+
+const Header = () => {
+  console.log("Renderizou");
+  return <div>Header fixo</div>;
+};
+
+export default React.memo(Header);
+```
+
+### useReducer
+
+- O useReducer serve para lidarmos com estados que possuam funções fixas responsáveis por modificar o mesmo.
+
+```javascript
+function reducer(state, action) {
+  switch (action) {
+    case "aumentar":
+      return state + 1;
+    case "reduzir":
+      return state - 1;
+    default:
+      throw new Error();
+  }
+}
+
+const App = () => {
+  const [state, dispatch] = React.useReducer(reducer, 0);
+
+  return (
+    <div>
+      <button onClick={() => dispatch("aumentar")}>+</button>
+      <button onClick={() => dispatch("reduzir")}>-</button>
+      <p>{state}</p>
+    </div>
+  );
+};
+```
+
+```javascript
+Sem o useReducer
+const App = () => {
+  const [contar, setContar] = React.useState(0);
+
+  function aumentar() {
+    setContar(contar + 1);
+  }
+
+  function reduzir() {
+    setContar(contar - 1);
+  }
+
+  return (
+    <div>
+      <button onClick={aumentar}>+</button>
+      <button onClick={reduzir}>-</button>
+      <p>{contar}</p>
+    </div>
+  );
+};
+```
+
+```javascript
+function reducer(state, action, ae) {
+  switch (action.type) {
+    case "remover":
+      return state.filter((item) => item !== action.content);
+    case "adicionar":
+      return [...state, action.content];
+    default:
+      throw new Error();
+  }
+}
+
+const App = () => {
+  const [state, dispatch] = React.useReducer(reducer, ["Item 1"]);
+
+  return (
+    <div>
+      <button onClick={() => dispatch({ type: "remover", content: "Item 1" })}>
+        +
+      </button>
+      <button
+        onClick={() => dispatch({ type: "adicionar", content: "Item 2" })}
+      >
+        -
+      </button>
+      <p>{state}</p>
+    </div>
+  );
+};
+```
+
+### Classes
+
+- Antes dos hooks a única forma de criarmos componentes com estados reativos, era através da extensão da classe React.Component. O JSX que é renderizado pelo componente de classe deve estar dentro do retorno do método render().
+
+#### extends React.Component
+
+```javascript
+import React from "react";
+
+class Produtos extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Componente de Classe</h1>
+      </div>
+    );
+  }
+}
+
+export default Produtos;
+```
+
+```javascript
+import Produtos from "./Produtos";
+
+const App = () => {
+  return (
+    <div>
+      <Produtos />
+    </div>
+  );
+};
+```
+
+#### this.props
+
+```javascript
+const App = () => {
+  return (
+    <div>
+      <Produtos titulo="Meus Produtos" />
+    </div>
+  );
+};
+```
+
+```javascript
+class Produtos extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>{this.props.titulo}</h1>
+      </div>
+    );
+  }
+}
+```
+
+#### this.state
+
+```javascript
+class Produtos extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contar: 0,
+    };
+  }
+  render() {
+    return (
+      <div>
+        <h1>{this.props.titulo}</h1>
+      </div>
+    );
+  }
+}
+```
+
+#### this.setState()
+
+```javascript
+class Produtos extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contar: 0,
+    };
+  }
+  render() {
+    return (
+      <div>
+        <h1>{this.props.titulo}</h1>
+        <p>{this.state.contar}</p>
+        <button
+          onClick={() =>
+            this.setState((state) => ({
+              contar: state.contar + 1,
+            }))
+          }
+        >
+          Adicionar
+        </button>
+      </div>
+    );
+  }
+}
+```
+
+#### Métodos
+
+```javascript
+class Produtos extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contar: 0,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState((state) => ({
+      contar: state.contar + 1,
+    }));
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>{this.props.titulo}</h1>
+        <p>{this.state.contar}</p>
+        <button onClick={this.handleClick}>Adicionar</button>
+      </div>
+    );
+  }
+}
+```
+
+#### Ciclo de Vida
+
+```javascript
+class Produtos extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contar: 0,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("Quando ele monta, utilizado para o Fetch");
+  }
+
+  componentDidUpdate() {
+    console.log("Sempre que atualiza");
+  }
+
+  componentWillUnmount() {
+    console.log("Sempre que é desmontado");
+  }
+
+  handleClick() {
+    this.setState((state) => ({
+      contar: state.contar + 1,
+    }));
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>{this.props.titulo}</h1>
+        <p>{this.state.contar}</p>
+        <button onClick={this.handleClick}>Adicionar</button>
+      </div>
+    );
+  }
+}
+```
