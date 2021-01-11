@@ -26,65 +26,39 @@ O projeto é um sistema de rede social, aonde é possivel adicionar fotos, visua
 
 ## :rocket: Tecnologias
 
-### Back-End (NodeJS)
-
-- [Node.js](https://nodejs.org/en/)
-- [Express](https://expressjs.com/pt-br/)
-- [Nodemon](https://www.npmjs.com/package/nodemon)
-- [Knex](http://knexjs.org/)
-- [SQLite3](https://www.sqlite.org/version3.html)
-- [Celebrate](https://www.npmjs.com/package/celebrate)
-- [Jest](https://jestjs.io/pt-BR/)
-- [Cross-Env](https://www.npmjs.com/package/cross-env)
-- [Supertest](https://www.npmjs.com/package/supertest)
-
-#### Comandos Back-End (NodeJS)
-
-```bash
-$ yarn init -y (start project)
-$ yarn add express (framework)
-$ node index.js (start application)
-$ yarn add nodemon -D (Reload application)
-$ yarn add knex (Query Builder)
-$ yarn add sqlite3 (Database)
-$ npx knex migrate:make create_ongs (create migrations)
-$ npx knex migrate:latest (execute migrations)
-$ npx knex (list commands knex)
-$ yarn add celebrate (validation - integrates validation with express)
-$ yarn add jest (TDD)
-$ npx jest --init (Execute init jest)
-$ yarn add cross-env (Run scripts that set and use environment variables across platforms)
-$ yarn add supertest (Test Request)
-$ npm test (Execute Test)
-```
-
 ### Front-End (ReactJS)
 
 - [React](https://reactjs.org)
-- [React Icons](https://www.npmjs.com/package/react-icons)
-- [Axios](https://www.npmjs.com/package/axios)
 - [React-router-dom](https://www.npmjs.com/package/react-router-dom)
-- [Intl](https://www.npmjs.com/package/intl)
 
 ### Comandos Front-End (ReactJS)
 
 ```bash
-$ npx create-react-app frontend  (start project)
-$ yarn start  (start application)
+$ npx create-react-app dogs  (start project)
+$ yarn start (start application)
 $ cleaning project src(README.md, App.css, App.test.js, index.css, logo.svg, serviceWorker.js, setupTests.js)
 $ cleaning project public(robots.txt, manigest.json, logo512.png, logo192.png)
-$ yarn add react-icons (Icons)
-$ yarn add react-router-dom (Routes)
-$ yarn add axios (Connect backend - Client HTTP)
+$ yarn add history react-router-dom@next (React-router-dom)
+```
+
+- Criar pasta .vscode e dentro dela arquivo settings.json
+
+```javascript
+{
+  "git.enabled": false,
+  "files.exclude": {
+    "node_modules": true,
+    ".vscode": true,
+    ".gitignore": true,
+    "package.json": true,
+    "package-lock.json": true,
+	"yarn.lock":true,
+    "public": true
+  }
+}
 ```
 
 ## :information_source: Como usar ?
-
-### Back-End NodeJS
-
-- Instale as dependencias: npm install / yarn
-- Execute a aplicação: npm start / yarn start
-- Teste: npm test
 
 ### Front-End ReactJS
 
