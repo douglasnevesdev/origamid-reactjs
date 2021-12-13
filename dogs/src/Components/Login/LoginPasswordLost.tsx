@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Login() {
+function LoginPasswordLost() {
   return (
     <div>
-      Login
+
     </div>
   )
 }
 
-export default Login
+export default LoginPasswordLost
