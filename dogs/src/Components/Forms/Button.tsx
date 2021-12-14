@@ -4,10 +4,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   children: string;
 }
 
-const Button: React.FC<InputProps> = (props: InputProps) => {
+const Button: React.FC<InputProps> = ({ children }: InputProps) => {
   return (
     <button className={styles.button}>
-      {props.children}
+      {children}
     </button>
   )
 }
