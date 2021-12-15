@@ -1,12 +1,15 @@
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 import styles from './Button.module.css';
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: string;
 }
 
-const Button: React.FC<InputProps> = ({ children }: InputProps) => {
+const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
+
   return (
-    <button className={styles.button}>
+    <button {...props} className={styles.button}>
       {children}
     </button>
   )
