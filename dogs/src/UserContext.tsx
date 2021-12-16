@@ -1,6 +1,7 @@
 import React from 'react'
 import { TOKEN_POST, USER_GET } from './api';
 
+
 export const UserContext = React.createContext({});
 
 export const UserStorage = ({ children }: any) => {
@@ -18,6 +19,7 @@ export const UserStorage = ({ children }: any) => {
     setLogin(true);
   }
 
+
   async function userLogin(username: any, password: any) {
     const { url, options } = TOKEN_POST({ username, password });
     const tokenRes = await fetch(url, options);
@@ -25,6 +27,7 @@ export const UserStorage = ({ children }: any) => {
     window.localStorage.setItem('token', token);
     getUser(token);
   }
+
 
   return (
     <UserContext.Provider value={{ userLogin, data }}>
