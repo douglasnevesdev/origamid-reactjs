@@ -12,7 +12,7 @@ function LoginForm() {
 
   const { userLogin } = React.useContext(UserContext);
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (username.validate() && password.validate()) {

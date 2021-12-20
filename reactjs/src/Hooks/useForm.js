@@ -1,18 +1,18 @@
 import React from 'react'
 
-const types: any = {
+const types = {
   email: {
     regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     message: 'Prencha um e-mail valido.'
   },
 }
 
-function useForm(type: any) {
+function useForm(type) {
 
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState('');
 
-  function validate(value: string) {
+  function validate(value) {
     //Se no campo for declarado como parametro false, fica entendido que não deseja validar.
     if (type === false) return true;
     if (value.length === 0) {
@@ -27,7 +27,7 @@ function useForm(type: any) {
     }
   }
 
-  function onChange({ target }: any) {
+  function onChange({ target }) {
     if (error) { validate(target.value) };
     setValue(target.value);
   }

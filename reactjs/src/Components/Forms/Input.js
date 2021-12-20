@@ -1,12 +1,8 @@
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 import styles from './Input.module.css';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  error: string;
-}
 
-const Input: React.FC<InputProps> = ({ label, name, type, value, onChange, error, onBlur }: InputProps) => {
+const Input = ({ label, name, type, value, onChange, error, onBlur }) => {
   return (
     <div className={styles.wrapper}>
       <label htmlFor={name} className={styles.label}>{label}</label>
