@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img alt="Dogs" title="logo" src="github/logo.svg" width="35%" />
+    <img alt="Dogs" title="logo" src="github/certificado.jpg" width="100%" />
 </h1>
 
 <h2 align="center">
